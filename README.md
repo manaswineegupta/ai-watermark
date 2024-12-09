@@ -43,10 +43,7 @@ doi = {10.1109/SP61157.2025.00005},
 
 ### Setup
 
-#### A) Download the pretrained models and datasets and extract them here 
-This is handled automatically by simply running ```./download_data_and_models.sh```.
-
-#### B) Installation 
+#### A) Installation 
 
 ```console
 conda create -n unmarker python=3.10
@@ -55,6 +52,9 @@ git clone https://github.com/andrekassis/ai-watermark.git
 cd ai-watermark
 ./install.sh
 ```
+
+#### B) Download the pretrained models and datasets and extract them here 
+This is handled automatically by simply running ```./download_data_and_models.sh```.
 
 ### Usage
 
