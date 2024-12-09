@@ -50,7 +50,7 @@ This is handled automatically by simply running ```./download_data_and_models.sh
 
 ```console
 conda create -n unmarker python=3.10
-conda activate unmarked
+conda activate unmarker
 git clone https://github.com/andrekassis/ai-watermark.git
 cd ai-watermark
 ./install.sh
