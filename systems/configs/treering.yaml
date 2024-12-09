@@ -1,0 +1,4 @@
+checkpoint: pretrained_models/watermarkers/treering/models/
+diffuser: Stable #[Stable, imagenet]
+data_path: datasets/treering_prompts.obj
+watermark_path: pretrained_models/watermarkers/treering/watermarks/

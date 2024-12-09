@@ -1,0 +1,4 @@
+network_path: pretrained_models/watermarkers/yu1/models/celeba_align_png_cropped_30k_128x128.pkl 
+watermark_path: pretrained_models/watermarkers/yu1/watermarks/STyleGAN_CELEBA_watermark.npy 
+watermark_length: 128
+image_size: 128

@@ -1,0 +1,3 @@
+generator_ckpt: pretrained_models/watermarkers/ptw/models/ptw-generator-40-bit-ffhq-256-2.pt 
+watermark_key_ckpt: pretrained_models/watermarkers/ptw/models/ptw-generator-40-bit-ffhq-256-2.pt
+image_size: 256

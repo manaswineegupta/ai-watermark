@@ -1,0 +1,5 @@
+checkpoint: pretrained_models/watermarkers/stega/models
+watermark_path: pretrained_models/watermarkers/stega/watermarks/watermark_raw.obj
+#watermark_path: pretrained_models/watermarkers/stega/watermarks/watermark.obj
+watermark_length: 100 #5
+image_size: 400

@@ -1,0 +1,11 @@
+psp_pth: pretrained_models/watermarkers/unganable/models/psp_ffhq_encode.pt
+inv_lr: 0.01
+inv_iters: 500
+cloaks_lr: 0.01 #0.1
+cloaks_eps: 0.02 #0.01 #0.01 #0.03, 0.05
+cloaks_eps_step: 0.005
+cloaks_max_iter: 500
+cloaks_beta: 1 #0.3
+eval_norm: np.inf #2
+eval_thresh: 0.05
+image_size: 256

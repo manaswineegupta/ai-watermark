@@ -1,0 +1,5 @@
+model_path: pretrained_models/watermarkers/yu2/models/
+generator: StyleGAN2 #[StyleGAN2, PROGAN]
+dataset: CelebA #[CelebA, LSUN]
+watermark_path: pretrained_models/watermarkers/yu2/watermarks/
+image_size: 128

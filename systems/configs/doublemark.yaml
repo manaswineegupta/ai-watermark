@@ -1,0 +1,5 @@
+net_path: pretrained_models/watermarkers/doublemark/models/model.pth 
+watermark_path: pretrained_models/watermarkers/doublemark/watermarks/watermark.npy 
+secret_path: pretrained_models/watermarkers/doublemark/secrets/secret.png 
+image_size: 256
+watermark_length: 64 #64

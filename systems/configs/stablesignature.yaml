@@ -1,0 +1,6 @@
+checkpoint: pretrained_models/watermarkers/stablesig/models
+data_path: datasets/treering_prompts.obj
+watermark_path: pretrained_models/watermarkers/stablesig/watermarks/watermark.npy
+diffusion_type: base #base, v
+precision: autocast #autocast, full
+watermark_length: 48

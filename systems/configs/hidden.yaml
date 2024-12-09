@@ -1,0 +1,4 @@
+checkpoint: pretrained_models/watermarkers/hidden/models/coco.pth
+watermark_path: pretrained_models/watermarkers/hidden/watermarks/coco.npy 
+image_size: 128 
+watermark_length: 30
