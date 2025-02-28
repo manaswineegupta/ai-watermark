@@ -64,6 +64,7 @@ if __name__ == "__main__":
             "TreeRing",
             "StegaStamp",
             "StableSignature",
+            "Prc",
         ],
         required=True,
     )
