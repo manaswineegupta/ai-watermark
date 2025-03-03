@@ -123,7 +123,7 @@ class Prc(BaseWatermarker):
         return watermark
 
     def _decode_batch_raw(self, x): 
-        reversed_latents = exact_inversion(x, prompt='', test_num_inference_steps=50, inv_order=0, pipe=self.decoder)
+        reversed_latents = exact_inversion(x, prompt='', test_num_inference_steps=50, inv_order=0, pipe=self.decoder, decoder_inv=False)
         reversed_latents = reversed_latents.to(torch.float64).flatten(start_dim=1).to(self.device)
         reversed_prc = recover_posteriors(reversed_latents, variances=1.5).flatten(start_dim=1).to(self.device)
         return reversed_prc
