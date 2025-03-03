@@ -73,7 +73,7 @@ def generate(
 
     # generate init latent
     seed = gen_seed + image_num
-    set_random_seed(seed)
+    #set_random_seed(seed)
 
     if init_latents is None:
         init_latents = pipe.get_random_latents()
@@ -87,7 +87,7 @@ def generate(
         width=image_length,
         latents=init_latents,
     )
-    image = output.images[0]
+    image = output.images
 
     return image, prompt, init_latents
 
@@ -131,7 +131,9 @@ def exact_inversion(
     text_embeddings = torch.cat([text_embeddings_tuple[1], text_embeddings_tuple[0]])
 
     # image to latent
-    image = transform_img(image).unsqueeze(0).to(text_embeddings.dtype).to(device)
+    #image = transform_img(image).unsqueeze(0).to(text_embeddings.dtype).to(device)
+    image = [transform_img(img) for img in image]  
+    image = torch.stack(image).to(text_embeddings.dtype).to(device)  
     if decoder_inv:
         image_latents = pipe.decoder_inv(image)
     else:

@@ -1,5 +1,5 @@
 import torch
-from scipy.special import erf
+from torch.special import erf
 from scipy.linalg import orth
 import numpy as np
 

@@ -17,6 +17,7 @@ def set_random_seed(seed=0):
 def transform_img(image, target_size=512):
     tform = transforms.Compose(
         [
+            transforms.ToPILImage(),
             transforms.Resize(target_size),
             transforms.CenterCrop(target_size),
             transforms.ToTensor(),

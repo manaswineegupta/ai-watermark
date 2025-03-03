@@ -26,7 +26,7 @@ class Prc(BaseWatermarker):
         device="cuda",
     ):
         image_size = 512 
-        hf_cache_dir = "cache/" ## change this maybe
+        hf_cache_dir = "cache/" 
         pipe = stable_diffusion_pipe(solver_order=1, model_id=checkpoint, cache_dir=hf_cache_dir)
         pipe.set_progress_bar_config(disable=True)
 
@@ -64,27 +64,20 @@ class Prc(BaseWatermarker):
     def get_raw_images(self, input_dir, num_images, image_size=256): 
         prompts = random.sample(list(range(len(self.dataset))), num_images)
         prompts = [self.dataset[i]["Prompt"] for i in prompts]
-        init_latents_batch = []
-        for i in range(num_images):
-            latent = np.random.randn(self.watermark_size).reshape(1, 4, 64, 64)
-            init_latents_batch.append(latent)
-        init_latents_w = torch.tensor(init_latents_batch, dtype=torch.float64)
-        #init_latents_w = torch.randn((num_images, self.watermark_size), dtype=torch.float64)
-        #init_latents_b = torch.concat(
-            #[torch.from_numpy(np.random.randn(self.watermark_size)).to(dtype=torch.float64) for i in range(num_images)]#########
-        #)
+        init_latents_w = torch.randn((num_images, 4, 64, 64), dtype=torch.float64, device=self.device)
         return (init_latents_w, prompts, image_size)
 
     def post_process_raw(self, x): 
         init_latents_w, prompts, image_size = x
-        images = []
-        for i in range(len(prompts)):
-            current_prompt = prompts[i]
-            current_latent = init_latents_w[i] 
-            orig_image, _, _ = generate(prompt=current_prompt,init_latents=current_latent,num_inference_steps=50,solver_order=1,pipe=self.encoder)
-            orig_image = transforms.ToTensor()(orig_image).view(1, 3, image_size, image_size)
-            images.append(orig_image)
-        images = torch.cat(images, dim=0).view(-1, 3, image_size, image_size).to(self.device)
+        orig_images, _, _ = generate(
+            prompt=prompts,  
+            init_latents=init_latents_w,
+            num_inference_steps=50,
+            solver_order=1,
+            pipe=self.encoder
+        )
+        images = torch.stack([transforms.ToTensor()(img) for img in orig_images], dim=0)
+        images = images.view(-1, 3, image_size, image_size).to(self.device)
         return transforms.Resize((image_size, image_size), antialias=None)(images)
 
     def encode(self, x, with_grad=False): 
@@ -120,36 +113,31 @@ class Prc(BaseWatermarker):
 
     def _encode_batch(self, x_batch, msg_batch): 
         init_latents_w, prompts, image_size = x_batch
-        new_latents = (self.watermark * torch.abs(init_latents_w.reshape(self.watermark.shape))).reshape(init_latents_w.shape)
+        new_latents = (self.watermark * torch.abs(init_latents_w.reshape(self.watermark.shape))).reshape(init_latents_w.shape).to(self.device)
         return self.post_process_raw((new_latents, prompts, self.image_size))
 
     def init_watermark(self, watermark_path): 
         with open(watermark_path, 'rb') as f:
             watermark = pickle.load(f)
-        watermark = watermark.to(dtype=torch.float64)
+        watermark = watermark.to(dtype=torch.float64, device=self.device)
         return watermark
 
-    def _decode_batch_raw(self, x):
-        reversed_prc_batch = []
-        for img in x:
-            img = transforms.ToPILImage()(img)
-            reversed_latents = exact_inversion(img, prompt='', test_num_inference_steps=50, inv_order=0, pipe=self.decoder)
-            reversed_prc = recover_posteriors(reversed_latents.to(torch.float64).flatten().cpu(), variances=float(1.5)).flatten().cpu()
-            reversed_prc_batch.append(reversed_prc)
-        reversed_prc_batch = torch.stack(reversed_prc_batch)
-        return reversed_prc_batch
+    def _decode_batch_raw(self, x): 
+        reversed_latents = exact_inversion(x, prompt='', test_num_inference_steps=50, inv_order=0, pipe=self.decoder)
+        reversed_latents = reversed_latents.to(torch.float64).flatten(start_dim=1).to(self.device)
+        reversed_prc = recover_posteriors(reversed_latents, variances=1.5).flatten(start_dim=1).to(self.device)
+        return reversed_prc
 
     def _decode_batch(self, x_batch, msg_batch):
         return self._decode_batch_raw(x_batch)
 
-    def is_detected(self, acc):
-        return acc >= 0
-
-    def stats(self, imgs, decoded, msg_batch):
+    def stats(self, imgs, decoded, msg_batch):##
         stats_batch = []
         for reversed_prc in decoded:
             detect_stats = Detect(self.decoding_key, reversed_prc)
             stats_batch.append(detect_stats)
-        return torch.tensor(stats_batch, dtype=torch.float64)
+        return torch.tensor(stats_batch, dtype=torch.float64, device=self.device)
 
+    def threshold(self, n):
+        return 0
     
