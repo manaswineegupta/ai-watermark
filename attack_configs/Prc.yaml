@@ -60,7 +60,7 @@ UnMarker:
                         decay_factor: 0.99
             scale_mode: fp32
         progress_bar_args:
-            eval_interval: 50
+            eval_interval: 500
             verbose: True
     
     stage1_args:
@@ -74,8 +74,8 @@ UnMarker:
         loss_thresh: 1e-4
         clip_min: 0.0
         clip_max: 1.0
-        binary_search_steps: 4
-        max_iterations: 5000
+        binary_search_steps: 1 #4
+        max_iterations: 2000 #5000
         initial_const: 1e6
         filter_args:
             loss_factor: 0
@@ -105,7 +105,7 @@ UnMarker:
             tanh_space: false
             scale_mode: fp32
         progress_bar_args:
-            eval_interval: 50
+            eval_interval: 500
             verbose: True
     stage_selector: [preprocess, stage1] #, stage2] #Stage2 i.e, low-frequency is not required for StableSignature and can lead to worse quality
 

@@ -36,11 +36,13 @@ class BaseWatermarker(ABC):
         ###
         self.iters = 0
         ###
-    
+
     def threshold(self, n):
         if n is None:
             return None
-        event = lambda k: np.array([comb(n, j) * (0.5**n) for j in range(k, n + 1)]).sum()
+        event = lambda k: np.array(
+            [comb(n, j) * (0.5**n) for j in range(k, n + 1)]
+        ).sum()
         for i in range(1, n + 1):
             ret = event(i)
             if ret < 0.01:
