@@ -8,16 +8,6 @@ from PIL import Image
 from math import comb
 
 
-def threshold(n):
-    if n is None:
-        return None
-    event = lambda k: np.array([comb(n, j) * (0.5**n) for j in range(k, n + 1)]).sum()
-    for i in range(1, n + 1):
-        ret = event(i)
-        if ret < 0.01:
-            return round(i / float(n), 2)
-
-
 class BaseWatermarker(ABC):
     def __init__(
         self,
@@ -42,10 +32,21 @@ class BaseWatermarker(ABC):
         self.watermark = (
             self.watermark.to(self.device) if self.watermark is not None else None
         )
-        self.acceptance_thresh = threshold(self.watermark_length)
+        self.acceptance_thresh = self.threshold(self.watermark_length)
         ###
         self.iters = 0
         ###
+
+    def threshold(self, n):
+        if n is None:
+            return None
+        event = lambda k: np.array(
+            [comb(n, j) * (0.5**n) for j in range(k, n + 1)]
+        ).sum()
+        for i in range(1, n + 1):
+            ret = event(i)
+            if ret < 0.01:
+                return round(i / float(n), 2)
 
     def init_watermark(self, watermark_path):
         pass

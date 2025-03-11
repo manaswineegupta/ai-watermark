@@ -6,3 +6,4 @@ from .ptw import PtW
 from .tree_ring import TREERING
 from .stega import Stega
 from .stable_sig import StableSignature
+from .Prc import Prc
