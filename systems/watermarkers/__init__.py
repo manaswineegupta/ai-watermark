@@ -12,6 +12,8 @@ def init_watermarker(name, batch_size=64, device="cuda"):
         "treering": TREERING,
         "stablesignature": StableSignature,
         "prc": Prc,
+        "gs": Gs,
+        "vine": Vine,
     }
     assert name in list(sys_map.keys())
     constructor = sys_map[name]

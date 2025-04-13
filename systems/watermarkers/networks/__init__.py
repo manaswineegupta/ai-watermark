@@ -7,3 +7,5 @@ from .tree_ring import TREERING
 from .stega import Stega
 from .stable_sig import StableSignature
 from .Prc import Prc
+from .Gs import Gs
+from .Vine import Vine
