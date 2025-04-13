@@ -173,6 +173,19 @@ class LpipsAlex(PerceptualLoss):
         self.lps_loss = lps_loss
 
 
+class LpipsVGG(PerceptualLoss):
+    def __init__(self):
+        lps_loss = lpips.LPIPS(
+            net="vgg",
+            model_path="pretrained_models/vgg.pth",
+            # lpips=False,
+            verbose=False,
+        ).eval()
+        loss_fn = lambda x, y: lps_loss(x, y, normalize=True)
+        super().__init__(loss_fn)
+        self.lps_loss = lps_loss
+
+
 class psnr(torch.nn.Module):
     def __init__(self):
         super().__init__()
@@ -196,6 +209,7 @@ def get_loss(loss_type, **kwargs):
         "MeanLoss": MeanLoss,
         "FFTLoss": FFTLoss,
         "SSIM": SSIM,
+        "LpipsVGG": LpipsVGG,
         "LpipsAlex": LpipsAlex,
         "DeeplossVGG": DeeplossVGG,
         "DeeplossSqueeze": DeeplossSqueeze,
