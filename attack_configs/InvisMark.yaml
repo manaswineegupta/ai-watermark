@@ -98,7 +98,7 @@ UnMarker:
         progress_bar_args:
             eval_interval: 50
             verbose: True
-    stage_selector: [stage2] #[preprocess, stage1] 
+    stage_selector: [preprocess, stage1, stage2] 
 
 DiffusionAttack:
     crop_ratio: 0.9 # whether to apply cropping with the DiffusionAttack. Comment out if you wish to disable this.
