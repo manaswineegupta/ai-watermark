@@ -1,0 +1,4 @@
+weights_path: pretrained_models/watermarkers/criw/models/adversarial.pth
+watermark_path: pretrained_models/watermarkers/criw/watermarks/criw_watermark.npy
+image_size: 128
+
